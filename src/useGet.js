@@ -12,7 +12,7 @@ const reducer = (status,action)=>{
     return status
   }
 
-const DataGet = url =>{
+const UseGet = url =>{
     const [data,dispatch] = useReducer(reducer,{
         loading:true,
         data:{}
@@ -31,4 +31,4 @@ const DataGet = url =>{
       return data
 }
 
-export default DataGet
+export default UseGet
