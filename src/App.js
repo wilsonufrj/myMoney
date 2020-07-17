@@ -1,16 +1,16 @@
 import React from 'react';
-import UseGet from './useGet'
-import UsePost from './usePost'
-import UseRemove from './useRemove'
-import Axios from 'axios';
+import Rest from './Rest'
 
-const URL = 'https://mymoney-e344c.firebaseio.com/movimentacoes/2020-02.json'
+
+const baseURL = 'https://mymoney-e344c.firebaseio.com/'
+const {useGet,usePost,useRemove} = Rest(baseURL)
+
 
 function App() {
 
-  const data = UseGet(URL)
-  const [postData,post] = UsePost(URL)
-  const [removeData,remove] = UseRemove()
+  const data = useGet('movimentacoes/2020-02')
+  const [postData,post] = usePost('movimentacoes/2020-02')
+  const [removeData,remove] = useRemove()
   
 
   const newPost = ()=>{
@@ -18,7 +18,7 @@ function App() {
   }
 
   const removePost =()=>{
-    remove('https://mymoney-e344c.firebaseio.com/movimentacoes/2020-02/-MCOb09Fgm_bSWfsNzk3.json')
+    remove('movimentacoes/2020-02/-MCMOSqa3JlPQdbtl9kA')
   }
 
   return (
