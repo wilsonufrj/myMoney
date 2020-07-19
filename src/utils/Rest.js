@@ -1,7 +1,6 @@
 import {useReducer,useEffect} from 'react'
 import axios from 'axios'
 
-//const baseURL = 'https://mymoney-e344c.firebaseio.com/'
 
 const reducer = (status,action)=>{
     if(action.type==='SUCCESS')
@@ -22,17 +21,22 @@ const reducer = (status,action)=>{
             data:{}
         })
 
-        useEffect(()=>{
-            axios.get(baseURL+resource+'.json')
-            .then(res=>{
+        const loading = async()=>{
+            const res = await axios.get(baseURL+resource+'.json')
             dispatch({
                 type:'SUCCESS',
                 data:res.data
             })
-            })
-        })
+        }
 
-        return data
+        useEffect(()=>{
+           loading() 
+        },[resource])
+
+        return{
+            ...data,
+            refetch: loading
+        }
     }
 
     const usePost = resource =>{
@@ -41,11 +45,9 @@ const reducer = (status,action)=>{
             data:{}
           })
     
-        const post = (data) =>{
-            axios.post(baseURL+resource+'.json',data)
-            .then(res =>{
-                dispatch({type:'SUCCESS',data:res.data})
-            })
+        const post = async (data) =>{
+           const res = await axios.post(baseURL+resource+'.json',data)
+           dispatch({type:'SUCCESS',data:res.data})
         }
     
         return [data,post]
@@ -57,11 +59,10 @@ const reducer = (status,action)=>{
             data:{}
           })
     
-        const remove = (resource) =>{
-            axios.delete(baseURL+resource+'.json')
-            .then( () =>{
-                dispatch({type:'SUCCESS'})
-            })
+        const remove = async (resource) =>{
+            await axios.delete(baseURL+resource+'.json')
+            dispatch({type:'SUCCESS'})
+            
         }
         return [data,remove]
     }
