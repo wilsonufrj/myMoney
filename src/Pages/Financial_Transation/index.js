@@ -3,36 +3,38 @@ import Rest from '../../utils/Rest'
 
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
-const { useGet, usePost,useRemove } = Rest(baseURL)
+const { useGet, usePost, useRemove } = Rest(baseURL)
 
 export default function FinancialTransation({ match }) {
 
     const data = useGet(`movimentacoes/${match.params.month}`)
     const [dataPost, post] = usePost(`movimentacoes/${match.params.month}`)
-    const [removeData,remove] = useRemove()
+    const [removeData, remove] = useRemove()
 
     const [description, setDescription] = useState('')
-    const [value, setValue] = useState(0.0)
+    const [value, setValue] = useState(0)
 
     const handleDescription = (evt) => {
         setDescription(evt.target.value)
     }
     const handleValue = (evt) => {
-        setValue(parseFloat(evt.target.value))
+        setValue(evt.target.value)
     }
 
     const onCLick = async () => {
-        await post({
-            description:description,
-            value:value 
-        })
+
+        if(!isNaN(value) && value.search(/^[-]?\d+(\.)?\d+?$/) >=0 ){
+            await post({
+                description: description,
+                value: parseFloat(value)
+            })
+        }
         setDescription('')
         setValue(0)
         data.refetch()
     }
 
-    const handleRemove = async(id)=>{
-        console.log(id)
+    const handleRemove = async (id) => {
         await remove(`movimentacoes/${match.params.month}/${id}`)
         data.refetch()
     }
@@ -59,7 +61,7 @@ export default function FinancialTransation({ match }) {
                                         <td>{data.data[id].description}</td>
                                         <td>
                                             {data.data[id].value}
-                                            <button onClick={()=>handleRemove(id)}>-</button>
+                                            <button className='btn btn-danger ml-2' onClick={() => handleRemove(id)}>-</button>
                                         </td>
                                     </tr>
                                 )
@@ -71,7 +73,7 @@ export default function FinancialTransation({ match }) {
                             </td>
                             <td>
                                 <input type='text' value={value} onChange={handleValue} />
-                                <button onClick={onCLick}>+</button>
+                                <button className='btn btn-success ml-2' onClick={onCLick}>+</button>
                             </td>
                         </tr>
                     </tbody>
