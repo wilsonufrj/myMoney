@@ -60,7 +60,7 @@ export default function FinancialTransation({ match }) {
 
             <h1>Movimentações</h1>
             {
-                !dataMeses.loading &&
+                !dataMeses.loading && dataMeses.data &&
                  <div>
                     <span>Entrada: {dataMeses.data.entrada}
                      / Saída: {dataMeses.data.saida}

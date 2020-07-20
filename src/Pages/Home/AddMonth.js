@@ -1,9 +1,11 @@
-import React,{useRef} from 'react'
+import React,{useRef,useState} from 'react'
+import {Redirect} from 'react-router-dom'
 
 export default function AddMonth() {
 
     const minYear = 2015
     const maxYear = 2022
+    const [redir,setRedir] = useState('')
     const year = []
     const month = []
 
@@ -24,7 +26,11 @@ export default function AddMonth() {
     }
 
     const printYearandMonth = ()=>{
-        console.log('O ano eh: ',refYear.current.value, refMonth.current.value)
+        setRedir(refYear.current.value+'-'+ refMonth.current.value)
+    }
+
+    if(redir!==''){
+        return <Redirect to={`movimentacoes/${redir}`}/>
     }
 
     return (
