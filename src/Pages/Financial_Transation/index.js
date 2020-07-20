@@ -9,9 +9,9 @@ export default function FinancialTransation({ match }) {
 
     const data = useGet(`movimentacoes/${match.params.month}`)
     const dataMeses = useGet(`meses/${match.params.month}`)
-    const [dataPost, post] = usePost(`movimentacoes/${match.params.month}`)
-    const [removeData, remove] = useRemove()
-    const [patchData, patch] = usePatch()
+    const [, post] = usePost(`movimentacoes/${match.params.month}`)
+    const [, remove] = useRemove()
+    const [, patch] = usePatch()
     const [description, setDescription] = useState('')
     const [value, setValue] = useState(0)
 
@@ -36,7 +36,6 @@ export default function FinancialTransation({ match }) {
         setTimeout(()=>{
             dataMeses.refetch()
         },5000)
-        
     }
 
     const handleRemove = async (id) => {

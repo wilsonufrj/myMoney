@@ -3,11 +3,17 @@ import Rest from '../../utils/Rest'
 import {Link} from 'react-router-dom'
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
-const { useGet } = Rest(baseURL)
+const { useGet,useRemove } = Rest(baseURL)
 
 export default function Month() {
   const data = useGet('meses')
+  const [,remove]=useRemove()
   
+  const handleClick = (evt)=>{
+    remove('meses/'+evt.target.value)
+    data.refetch()
+  }
+
   return (
     <div className='container'>
       {data.loading? <span>Loading...</span>:
@@ -19,6 +25,7 @@ export default function Month() {
               <th>Entrada</th>
               <th>Previsão Saída</th>
               <th>Saída</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -31,6 +38,7 @@ export default function Month() {
                       <td>{data.data[mes].entrada}</td>
                       <td>{data.data[mes].previsao_saida}</td>
                       <td>{data.data[mes].saida}</td>
+                      <td><button value={mes} className='btn btn-danger' onClick={handleClick}>-</button></td>
                     </tr>
                   )
                 })
