@@ -67,11 +67,26 @@ const reducer = (status,action)=>{
         return [data,remove]
     }
 
+    const usePatch = () =>{
+        const [data,dispatch] = useReducer(reducer,{
+            loading:false,
+            data:{}
+          })
+    
+        const patch = async (resource,data) =>{
+            await axios.patch(baseURL+resource+'.json',data)
+            dispatch({type:'SUCCESS'})
+            
+        }
+        return [data,patch]
+    }
+
 
     return{
         useGet,
         usePost,
-        useRemove
+        useRemove,
+        usePatch
     }
 }
 

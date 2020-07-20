@@ -3,14 +3,15 @@ import Rest from '../../utils/Rest'
 
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
-const { useGet, usePost, useRemove } = Rest(baseURL)
+const { useGet, usePost, useRemove,usePatch } = Rest(baseURL)
 
 export default function FinancialTransation({ match }) {
 
     const data = useGet(`movimentacoes/${match.params.month}`)
+    const dataMeses = useGet(`meses/${match.params.month}`)
     const [dataPost, post] = usePost(`movimentacoes/${match.params.month}`)
     const [removeData, remove] = useRemove()
-
+    const [patchData, patch] = usePatch()
     const [description, setDescription] = useState('')
     const [value, setValue] = useState(0)
 
@@ -32,17 +33,44 @@ export default function FinancialTransation({ match }) {
         setDescription('')
         setValue(0)
         data.refetch()
+        setTimeout(()=>{
+            dataMeses.refetch()
+        },5000)
+        
     }
 
     const handleRemove = async (id) => {
         await remove(`movimentacoes/${match.params.month}/${id}`)
         data.refetch()
+        setTimeout(()=>{
+            dataMeses.refetch()
+        },5000)
+    }
+
+    const changePrevisaoEntrada = (evt)=>{
+        patch(`meses/${match.params.month}`,{previsao_entrada:evt.target.value})
+    }
+    const changePrevisaoSaida = (evt)=>{
+        patch(`meses/${match.params.month}`,{previsao_saida:evt.target.value})
+
     }
 
     return (
         <div className='container'>
 
             <h1>Movimentações</h1>
+            {
+                !dataMeses.loading &&
+                 <div>
+                    <span>Entrada: {dataMeses.data.entrada}
+                     / Saída: {dataMeses.data.saida}
+                    </span><br/>
+                    <span>
+                        Previsão Entrada: {dataMeses.data.previsao_entrada} <input type='text' onBlur={changePrevisaoEntrada}/> /
+                        Previsão Saída: {dataMeses.data.previsao_saida}<input type='text' onBlur={changePrevisaoSaida}/>
+                    </span>
+                </div>
+            }
             {data.loading ? <span>Loading...</span> :
                 <table className='table'>
                     <thead>
