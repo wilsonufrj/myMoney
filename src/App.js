@@ -6,10 +6,11 @@ import Home from './Pages/Home';
 import FinancialTransation from './Pages/Financial_Transation';
 
 function App() {
+
   return (
     <Router>
       <div>
-        <Navbar />
+        <Navbar/>
         <Route path='/' exact component={Home}/>
         <Route path='/movimentacoes/:month' component={FinancialTransation}/>
       </div>
