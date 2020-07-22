@@ -2,11 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandHoldingUsd } from '@fortawesome/free-solid-svg-icons'
+
 import './navbar_style.css'
+
 
 const element = <FontAwesomeIcon icon={faHandHoldingUsd} />
 
-const Navbar = (props) => {
+const Navbar = () => {
+
     return (
         <nav className='navbar navbar-light bg-warning'>
             <div className='container-fluid'>
