@@ -11,6 +11,7 @@ export default function Month() {
   
   const handleClick = (evt)=>{
     remove('meses/'+evt.target.value)
+    remove('movimentacoes/'+evt.target.value)
     data.refetch()
   }
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Rest from '../../utils/Rest'
+import Sidebar from '../../components/Sidebar/Sidebar'
 
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
@@ -32,18 +33,18 @@ export default function FinancialTransation({ match }) {
         }
         setDescription('')
         setValue(0)
-        data.refetch()
+        await data.refetch()
         setTimeout(()=>{
             dataMeses.refetch()
-        },5000)
+        },4000)
     }
 
     const handleRemove = async (id) => {
         await remove(`movimentacoes/${match.params.month}/${id}`)
-        data.refetch()
+        await data.refetch()
         setTimeout(()=>{
             dataMeses.refetch()
-        },5000)
+        },4000)
     }
 
     const changePrevisaoEntrada = (evt)=>{
@@ -55,8 +56,8 @@ export default function FinancialTransation({ match }) {
     }
 
     return (
-        <div className='container'>
-
+        <div className='container body'>
+            <Sidebar/>
             <h1>Movimentações</h1>
             {
                 !dataMeses.loading && dataMeses.data &&

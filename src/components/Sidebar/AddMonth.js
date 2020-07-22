@@ -43,7 +43,9 @@ export default function AddMonth() {
             <select className='ml-3 mr-3' ref={refMonth}>
                 {month.map(num=>addZero(num)).map((month,index)=><option key={index} value={month}>{month}</option>)}
             </select>
-            <button onClick={printYearandMonth} className='ml-2 mt-2 mr-2 btn btn-info'>Add</button>
+            <button onClick={printYearandMonth} className='ml-2 mt-2 mr-2 btn btn-info'>
+                Add
+            </button>
         </div>
     )
 }
