@@ -1,7 +1,59 @@
 import React, { useState } from 'react'
 import Rest from '../../utils/Rest'
 import Sidebar from '../../components/Sidebar/Sidebar'
+import Loading from '../../components/Loading'
 
+//CHART
+import {Line} from 'react-chartjs-2';
+import {Pie} from 'react-chartjs-2';
+
+const dataChart = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'My First dataset',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [65, 59, 80, 81, 56, 55, 40]
+      }
+    ]
+  }
+
+  const dataPie = {
+	labels: [
+		'Red',
+		'Blue',
+		'Yellow'
+	],
+	datasets: [{
+		data: [300, 50, 100],
+		backgroundColor: [
+		'#FF6384',
+		'#36A2EB',
+		'#FFCE56'
+		],
+		hoverBackgroundColor: [
+		'#FF6384',
+		'#36A2EB',
+		'#FFCE56'
+		]
+	}]
+};
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
 const { useGet, usePost, useRemove,usePatch } = Rest(baseURL)
@@ -16,6 +68,7 @@ export default function FinancialTransation({ match }) {
     const [description, setDescription] = useState('')
     const [value, setValue] = useState(0)
 
+    
     const handleDescription = (evt) => {
         setDescription(evt.target.value)
     }
@@ -71,7 +124,28 @@ export default function FinancialTransation({ match }) {
                     </span>
                 </div>
             }
-            {data.loading ? <span>Loading...</span> :
+            {data.loading ? <Loading/> :
+                <div>
+                    <div className='row d-flex justify-content-around mt-3 mb-3'>
+                        <div className='card'>
+                            <h1 className='card-header'>Linear Chart</h1>
+                            <div className='card-body'>
+                                <Line data={dataChart}
+                                    width={500}
+                                    height={300}
+                                />
+                            </div>
+                        </div>
+                        <div className='card'>
+                            <h1 className='card-header'>Pie Chart</h1>
+                            <div className='card-body'>
+                            <Pie data={dataPie}
+                                width={300}
+                                height={300}
+                            />
+                            </div>
+                        </div>
+                    </div>
                 <table className='table'>
                     <thead>
                         <tr>
@@ -106,6 +180,7 @@ export default function FinancialTransation({ match }) {
                         </tr>
                     </tbody>
                 </table>
+                </div>
             }
         </div>
     )

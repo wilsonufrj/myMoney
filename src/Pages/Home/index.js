@@ -8,7 +8,7 @@ const Home = () => {
         <div>
             <Sidebar/>
             <div className='body'>
-                <div>
+                <div className='d-flex justify-content-center'>
                     <h1>Bem-Vindo ao My money</h1>
                 </div>
                 <Month />

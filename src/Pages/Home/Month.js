@@ -1,6 +1,7 @@
 import React from 'react'
 import Rest from '../../utils/Rest'
 import {Link} from 'react-router-dom'
+import Loading from '../../components/Loading'
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
 const { useGet,useRemove } = Rest(baseURL)
@@ -8,7 +9,6 @@ const { useGet,useRemove } = Rest(baseURL)
 export default function Month() {
   const data = useGet('meses')
   const [,remove]=useRemove()
-  
   const handleClick = (evt)=>{
     remove('meses/'+evt.target.value)
     remove('movimentacoes/'+evt.target.value)
@@ -17,7 +17,8 @@ export default function Month() {
 
   return (
     <div className='container'>
-      {data.loading? <span>Loading...</span>:
+      {data.loading?
+        <Loading/> :
         <table className='table'>
           <thead>
             <tr>
