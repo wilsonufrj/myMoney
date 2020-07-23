@@ -1,0 +1,18 @@
+.body{
+    margin-left: 120px ;
+    animation: body-close 0.75s forwards;
+}
+
+.body.open{
+    animation: body-open 0.75s forwards;
+}
+
+@keyframes body-open{
+    0%{margin-left: 120px;}
+    100%{margin-left: 200px;}
+}
+
+@keyframes body-close{
+    0%{margin-left: 200px;}
+    100%{margin-left: 120px;}
+}

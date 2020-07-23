@@ -90,4 +90,18 @@ const reducer = (status,action)=>{
     }
 }
 
+export const usePostLogin = resource =>{
+    const [data,dispatch] = useReducer(reducer,{
+        loading:false,
+        data:{}
+      })
+
+    const post = async (data) =>{
+       const res = await axios.post(resource,data)
+       dispatch({type:'SUCCESS',data:res.data})
+    }
+
+    return [data,post]
+}
+
 export default Rest
