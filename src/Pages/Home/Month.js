@@ -2,8 +2,8 @@ import React from 'react'
 import Rest from '../../utils/Rest'
 import {Link,Redirect} from 'react-router-dom'
 
-
 import Loading from '../../components/Loading'
+
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
 const { useGet,useRemove } = Rest(baseURL)

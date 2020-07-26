@@ -32,7 +32,6 @@ export default function AddMonth() {
     if(redir!==''){
         return <Redirect to={`movimentacoes/${redir}`}/>
     }
-
     return (
         <div className='d-flex flex-column'>
         <label className=' ml-4 mt-1 text-white font-weight-bold'>Ano</label>
