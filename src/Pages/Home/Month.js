@@ -1,6 +1,8 @@
 import React from 'react'
 import Rest from '../../utils/Rest'
-import {Link} from 'react-router-dom'
+import {Link,Redirect} from 'react-router-dom'
+
+
 import Loading from '../../components/Loading'
 
 const baseURL = 'https://mymoney-e344c.firebaseio.com/'
@@ -15,6 +17,9 @@ export default function Month() {
     data.refetch()
   }
 
+  if(data.error && data.error==='Permission denied'){
+    return <Redirect to='/login'/>
+}
   return (
     <div className='container'>
       {data.loading?
