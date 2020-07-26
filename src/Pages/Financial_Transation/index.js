@@ -1,77 +1,38 @@
-import React, { useState } from 'react'
-import Rest from '../../utils/Rest'
+import React from 'react'
 import Sidebar from '../../components/Sidebar/Sidebar'
-
-
-const baseURL = 'https://mymoney-e344c.firebaseio.com/'
-const { useGet, usePost, useRemove,usePatch } = Rest(baseURL)
+import { Redirect } from 'react-router-dom'
+import { useApiTransaction } from '../../API'
+import InfoMonth from './infoMonth'
+import AddTransaction from './addTransaction'
 
 export default function FinancialTransation({ match }) {
+    const { transactions, newTransaction, removeTransaction } = useApiTransaction(match.params.month)
 
-    const data = useGet(`movimentacoes/${match.params.month}`)
-    const dataMeses = useGet(`meses/${match.params.month}`)
-    const [, post] = usePost(`movimentacoes/${match.params.month}`)
-    const [, remove] = useRemove()
-    const [, patch] = usePatch()
-    const [description, setDescription] = useState('')
-    const [value, setValue] = useState(0)
-
-    const handleDescription = (evt) => {
-        setDescription(evt.target.value)
+    const onCLick = async (data) => {
+        await newTransaction(data)
+        await transactions.refetch()
+        setTimeout(() => {
+            //infoMonth.refetch()
+        }, 4000)
     }
-    const handleValue = (evt) => {
-        setValue(evt.target.value)
-    }
-
-    const onCLick = async () => {
-
-        if(!isNaN(value) && value.search(/^[-]?\d+(\.)?\d+?$/) >=0 ){
-            await post({
-                description: description,
-                value: parseFloat(value)
-            })
-        }
-        setDescription('')
-        setValue(0)
-        await data.refetch()
-        setTimeout(()=>{
-            dataMeses.refetch()
-        },4000)
-    }
-
     const handleRemove = async (id) => {
-        await remove(`movimentacoes/${match.params.month}/${id}`)
-        await data.refetch()
-        setTimeout(()=>{
-            dataMeses.refetch()
-        },4000)
+        await removeTransaction(`movimentacoes/${match.params.month}/${id}`)
+        await transactions.refetch()
+        setTimeout(() => {
+            //infoMonth.refetch()
+        }, 4000)
     }
 
-    const changePrevisaoEntrada = (evt)=>{
-        patch(`meses/${match.params.month}`,{previsao_entrada:evt.target.value})
-    }
-    const changePrevisaoSaida = (evt)=>{
-        patch(`meses/${match.params.month}`,{previsao_saida:evt.target.value})
-
+    if (transactions.error && transactions.error === 'Permission denied') {
+        return <Redirect to='/login' />
     }
 
     return (
         <div className='container body'>
-            <Sidebar/>
+            <Sidebar />
             <h1>Movimentações</h1>
-            {
-                !dataMeses.loading && dataMeses.data &&
-                 <div>
-                    <span>Entrada: {dataMeses.data.entrada}
-                     / Saída: {dataMeses.data.saida}
-                    </span><br/>
-                    <span>
-                        Previsão Entrada: {dataMeses.data.previsao_entrada} <input type='text' onBlur={changePrevisaoEntrada}/> /
-                        Previsão Saída: {dataMeses.data.previsao_saida}<input type='text' onBlur={changePrevisaoSaida}/>
-                    </span>
-                </div>
-            }
-            {data.loading ? <span>Loading...</span> :
+            <InfoMonth month={match.params.month} />
+            {transactions.loading ? <span>Loading...</span> :
                 <table className='table'>
                     <thead>
                         <tr>
@@ -82,28 +43,21 @@ export default function FinancialTransation({ match }) {
 
                     <tbody>
                         {
-                            data.data &&
-                            Object.keys(data.data).map((id, index) => {
+                            transactions.data &&
+                            Object.keys(transactions.data).map((id, index) => {
                                 return (
                                     <tr key={index}>
-                                        <td>{data.data[id].description}</td>
+                                        <td>{transactions.data[id].description}</td>
                                         <td>
-                                            {data.data[id].value}
+                                            {transactions.data[id].value}
                                             <button className='btn btn-danger ml-2' onClick={() => handleRemove(id)}>-</button>
                                         </td>
                                     </tr>
                                 )
                             })
                         }
-                        <tr>
-                            <td>
-                                <input type='text' value={description} onChange={handleDescription} />
-                            </td>
-                            <td>
-                                <input type='text' value={value} onChange={handleValue} />
-                                <button className='btn btn-success ml-2' onClick={onCLick}>+</button>
-                            </td>
-                        </tr>
+                        <AddTransaction onCLicky={onCLick}/>
+                        
                     </tbody>
                 </table>
             }
