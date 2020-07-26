@@ -6,8 +6,6 @@ for (let i = 1; i < 32; i++) {
     day.push(i)
 }
 
-
-
 const LinearChart = ({data}) => {
     const [money,setMoney]=useState([])
     const [dayMonth,setDayMonth]=useState([])
@@ -45,10 +43,11 @@ const LinearChart = ({data}) => {
     const auxValue = []
     const auxDay = []
     useEffect(()=>{
-        Object.keys(data.data).map((mov)=>{
-            auxValue.push(data.data[mov].value)
-            auxDay.push(data.data[mov].day)
-        })
+        if(data)
+            Object.keys(data.data).map((mov)=>{
+                auxValue.push(data.data[mov].value)
+                auxDay.push(data.data[mov].day)
+            })
 
         auxValue.forEach((value)=>{
             if(value>0){
