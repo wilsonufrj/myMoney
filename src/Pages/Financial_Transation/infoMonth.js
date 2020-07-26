@@ -3,7 +3,6 @@ import {useApiMonth} from '../../API'
 
 const InfoMonth = ({month})=>{
     const {infoMonth,changeMonth} = useApiMonth(month)
-
     const changePrevisaoEntrada = (evt)=>{
         changeMonth({previsao_entrada:evt.target.value})
     }

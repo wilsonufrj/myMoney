@@ -38,25 +38,34 @@ const getAuth = () => {
 }
 
 const Rest = baseURL => {
-    const useGet = resource => {
-        const [data, dispatch] = useReducer(reducer, INICIAL_STATE)
 
+    const useGet = resource => {
+        
+        const [data, dispatch] = useReducer(reducer, INICIAL_STATE)
         const loading = async () => {
             try {
                 const res = await axios.get(baseURL + resource + '.json' + getAuth())
-                if (res.data.error && Object.keys(res.data.error).length > 0) {
+                if(res.data === null){
+                    return (dispatch({
+                        type: 'SUCCESS',
+                        data: res.data
+                    }))
+                }
+                if (res.data.error  && Object.keys(res.data.error).length > 0) {
                     dispatch({
                         type: 'FAILURE',
                         error: res.data.error,
                     })
                 }
-                else {
+
+                else{
                     dispatch({
                         type: 'SUCCESS',
                         data: res.data
                     })
                 }
             } catch (error) {
+                console.log(error)
                 dispatch({
                     type: 'FAILURE',
                     error: 'Unknow'

@@ -18,7 +18,6 @@ export default function Month() {
   if(data.error && data.error==='Permission denied'){
     return <Redirect to='/login'/>
 }
-  
   return (
     <div className='container'>
       {data.loading? <span>Loading...</span>:

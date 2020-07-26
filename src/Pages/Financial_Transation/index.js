@@ -11,22 +11,14 @@ export default function FinancialTransation({ match }) {
     const onCLick = async (data) => {
         await newTransaction(data)
         await transactions.refetch()
-        setTimeout(() => {
-            //infoMonth.refetch()
-        }, 4000)
     }
     const handleRemove = async (id) => {
         await removeTransaction(`movimentacoes/${match.params.month}/${id}`)
         await transactions.refetch()
-        setTimeout(() => {
-            //infoMonth.refetch()
-        }, 4000)
     }
-
     if (transactions.error && transactions.error === 'Permission denied') {
         return <Redirect to='/login' />
     }
-
     return (
         <div className='container body'>
             <Sidebar />
