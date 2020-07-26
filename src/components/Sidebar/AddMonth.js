@@ -35,7 +35,7 @@ export default function AddMonth() {
     return (
         <div className='d-flex flex-column'>
         <label className=' ml-4 mt-1 text-white font-weight-bold'>Ano</label>
-            <select className='ml-2 mr-2' id='year' ref={refYear}>
+            <select className='ml-2 mr-2' ref={refYear}>
                 {year.map((year,index)=><option key={index} value={year}>{year}</option>)}
             </select>
             <label className=' ml-4 mt-1 text-white font-weight-bold'>Mês</label>

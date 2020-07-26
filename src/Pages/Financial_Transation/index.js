@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import Sidebar from '../../components/Sidebar/Sidebar'
 import { Redirect } from 'react-router-dom'
 import { useApiTransaction } from '../../API'
@@ -49,7 +49,6 @@ export default function FinancialTransation({ match }) {
                             })
                         }
                         <AddTransaction onCLicky={onCLick}/>
-                        
                     </tbody>
                 </table>
             }
