@@ -22,8 +22,8 @@ export default function FinancialTransation({ match }) {
     const onCLick = async (data) => {
         await newTransaction(data)
         await transactions.refetch()
-
     }
+    
     const handleRemove = async (id) => {
         await removeTransaction(`movimentacoes/${match.params.month}/${id}`)
         await transactions.refetch()
