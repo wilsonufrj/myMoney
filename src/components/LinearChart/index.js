@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2';
 
 const day = []
@@ -6,12 +6,13 @@ for (let i = 1; i < 32; i++) {
     day.push(i)
 }
 
-const LinearChart = ({data}) => {
-    const [money,setMoney]=useState([])
-    const [dayMonth,setDayMonth]=useState([])
-
-    const gain = []
-    const spend = []
+const LinearChart = ({ data }) => {
+    const [money, setMoney] = useState({
+        gain: new Map(),
+        spend: new Map(),
+    })
+    const [dayMonth, setDayMonth] = useState([])
+    const [total, setTotal] = useState([])
 
     const dataChart = {
         labels: dayMonth,
@@ -35,31 +36,75 @@ const LinearChart = ({data}) => {
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: money,
+                data: total,
             }
         ]
     }
 
-    const auxValue = []
+    const auxGain = new Map()
+    const auxSpend = new Map()
     const auxDay = []
-    useEffect(()=>{
-        if(data)
-            Object.keys(data.data).map((mov)=>{
-                auxValue.push(data.data[mov].value)
-                auxDay.push(data.data[mov].day)
+    useEffect(() => {
+        if (data)
+            Object.keys(data).map((transaction) => {
+                if (auxDay.indexOf(data[transaction].day) === -1)
+                    auxDay.push(data[transaction].day)
+                if (data[transaction].value > 0) {
+                    auxGain.set(data[transaction].day, data[transaction].value)
+                } else {
+                    auxSpend.set(data[transaction].day, data[transaction].value)
+                }
             })
 
-        auxValue.forEach((value)=>{
-            if(value>0){
-                gain.push(value)
-            }else{
-                spend.push(value)
-            }
+        setDayMonth(auxDay.sort())
+        setMoney({
+            gain: auxGain,
+            spend: auxSpend
         })
+    }, [])
 
-        //TODO: Fazer um jeito que o grafico mostre os valores reais de ganho e gasto
+    useEffect(() => {
+        const auxTotal = []
+        for (let i = 0; i < dayMonth.length; i++) {
+            if (money.spend.has(dayMonth[i]) && money.gain.has(dayMonth[i])) {
+                if (i === 0) {
+                    let totalParcial = money.gain.get(dayMonth[i]) + money.spend.get(dayMonth[i])
+                    auxTotal.push(totalParcial)
+                 }
+                else {
+                    let totalParcial = money.gain.get(dayMonth[i]) + money.spend.get(dayMonth[i])
+                    let recupera = auxTotal[i - 1] + totalParcial
+                    auxTotal.push(recupera)
+                }
 
-    },[])
+            } else {
+                if (money.gain.has(dayMonth[i])) {
+                    if (i === 0) {
+                        let totalParcial = money.gain.get(dayMonth[i])
+                        auxTotal.push(totalParcial)
+                     }
+                    else {
+                        let totalParcial = money.gain.get(dayMonth[i])
+                        let recupera = auxTotal[i - 1] + totalParcial
+                        auxTotal.push(recupera)
+                    }
+                }
+                if (money.spend.has(dayMonth[i])) {
+                    if (i === 0) {
+                        let totalParcial = money.spend.get(dayMonth[i])
+                        auxTotal.push(totalParcial)
+                     }
+                    else {
+                        let totalParcial = money.spend.get(dayMonth[i])
+                        let recupera = auxTotal[i - 1] + totalParcial
+                        auxTotal.push(recupera)
+                    }
+                }
+            }
+        }
+        setTotal(auxTotal)
+    }, [dayMonth])
+
 
     return (
         <div className='card'>
