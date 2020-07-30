@@ -36,8 +36,8 @@ export default function Login() {
         <div className='body'>
             <Sidebar />
             <h1>Login</h1>
-            <button onClick={login}>Logar</button>
-            <pre>{JSON.stringify(dataPost)}</pre>
+            <button onClick={login} className="btn btn-dark">Logar</button>
+            
         </div>
     )
 }
