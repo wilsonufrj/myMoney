@@ -108,10 +108,10 @@ const LinearChart = ({ data }) => {
 
     return (
         <div className='card'>
-            <h1 className='card-header'>Linear Chart</h1>
+            <h1 className='card-header'>Resumo do Mês</h1>
             <div className='card-body'>
                 <Line data={dataChart}
-                    width={500}
+                    width={1000}
                     height={300}
                 />
             </div>

@@ -7,7 +7,6 @@ import InfoMonth from './infoMonth'
 import AddTransaction from './addTransaction'
 //CHART
 import LinearChart from '../../components/LinearChart';
-import PieChart from '../../components/PieChart';
 
 const day = []
 for (let i = 1; i < 32; i++) {
@@ -39,7 +38,6 @@ export default function FinancialTransation({ match }) {
                 <div>
                 <div className='row d-flex justify-content-around mt-3 mb-3'>
                     <LinearChart data ={transactions.data} />
-                    <PieChart data ={transactions} />
                 </div>
                 
                 <table className='table'>
