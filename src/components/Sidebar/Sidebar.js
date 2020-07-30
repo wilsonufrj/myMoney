@@ -20,7 +20,7 @@ const Sidebar = () => {
         }else{
 
         }
-    })
+    },[])
     const logOut = ()=>{
         localStorage.removeItem('token')
         setLogado(false)

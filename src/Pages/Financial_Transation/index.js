@@ -7,7 +7,6 @@ import InfoMonth from './infoMonth'
 import AddTransaction from './addTransaction'
 //CHART
 import LinearChart from '../../components/LinearChart';
-import PieChart from '../../components/PieChart';
 
 
 export default function FinancialTransation({ match }) {
@@ -34,7 +33,6 @@ export default function FinancialTransation({ match }) {
                 <div>
                 <div className='row d-flex justify-content-around mt-3 mb-3'>
                     <LinearChart data ={transactions.data} />
-                    <PieChart data ={transactions} />
                 </div>
                 
                 <table className='table'>
